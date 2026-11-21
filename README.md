@@ -5,7 +5,8 @@ control them through a real interface instead of keyboard shortcuts. A KnobDeck 
 [knobdeck-plugins](https://github.com/Knobdeck/knobdeck-plugins) talks to each one: the editor
 companions, the Blender add-on and the Ableton Live Remote Script link to KnobDeck's companion hub (the editor companions, for older
 KnobDeck versions, also expose a local action server), and the browser extension connects out to
-the browser plugin's local server.
+the browser plugin's local server. The Lightroom Classic plug-in listens on two loopback ports
+(Lightroom's `LrSocket` can't connect out) and the `lightroom-classic` plugin connects to it.
 
 Every companion lives in its own repo with its own CI, versions and one-click store releases. This
 repo holds what they share: the protocol, the privacy statement and the compatibility test driver.
@@ -21,6 +22,7 @@ and is served as `/v2/companions.json`. Each companion's release workflow tells 
 | KnobDeck Browser Companion | [knobdeck-browser-companion](https://github.com/Knobdeck/knobdeck-browser-companion) | Chrome, Edge, Brave and other Chromium browsers; Firefox, Zen | `browser-plugin` | Chrome Web Store (also for Edge, Brave), addons.mozilla.org |
 | KnobDeck add-on for Blender | [knobdeck-blender-companion](https://github.com/Knobdeck/knobdeck-blender-companion) | Blender 4.2 and newer | `blender` | extensions.blender.org |
 | KnobDeck Remote Script for Ableton Live | [knobdeck-ableton-companion](https://github.com/Knobdeck/knobdeck-ableton-companion) | Ableton Live 11 and newer (Windows, macOS) | `ableton` | none (the plugin's setup installs it from the GitHub release) |
+| KnobDeck plug-in for Lightroom Classic | [knobdeck-lightroom-companion](https://github.com/Knobdeck/knobdeck-lightroom-companion) | Adobe Lightroom Classic 10 and newer (Windows, macOS) | `lightroom-classic` | none (the plugin's setup installs it from the GitHub release) |
 
 - [PROTOCOL.md](PROTOCOL.md): how the plugins talk to the companions. Ids are a contract: add,
   never rename.
@@ -30,6 +32,8 @@ and is served as `/v2/companions.json`. Each companion's release workflow tells 
   here first, then copy it over.
   The Blender add-on and the Ableton Live Remote Script are Python and have their own equivalent
   (`tests/e2e_plugin.py` / `tests/test_e2e_plugin.py`, with a fake companion hub).
+  The Lightroom Classic plug-in is Lua; its `tests/e2e_plugin.py` runs it in a fake Lightroom
+  against the real plugin.
 
 ## Building, testing and releasing
 
